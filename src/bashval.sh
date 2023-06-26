@@ -6,12 +6,12 @@ then
   exit 1
 fi
 
-if [ ! -f "api.proto" ]; then
+proto="proto/api.proto"
+
+if [ ! -f "$proto" ]; then
   echo "Missing protobuf files, please download them from https://govaldocs.pages.dev/api.proto" 1>&2
   exit 1
 fi
-
-proto="proto/api.proto"
 
 encode() {
   protoc --encode=api.Command "$proto"
