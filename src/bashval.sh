@@ -37,6 +37,9 @@ containerState {
 }
 EOM
 
+# Connection toast
+toast "Welcome to Bashval"
+
 while IFS='$\n' read -r line; do
   decode "$line"
 done
