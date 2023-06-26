@@ -7,11 +7,11 @@ then
 fi
 
 encode() {
-  protoc --encode=api.Command "$proto"
+  protoc --encode="${$1:-api.Command}" "$proto"
 }
 
 decode() {
-  protoc --decode=api.Command "$proto"
+  protoc --decode="${$1:-api.Command}" "$proto"
 }
 
 toast() {
