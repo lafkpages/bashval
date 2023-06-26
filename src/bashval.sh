@@ -40,6 +40,10 @@ EOM
 # Connection toast
 toast "Welcome to Bashval"
 
+# Logs file
+logs="bashval.log"
+echo -n "" > "$logs"
+
 while IFS='$\n' read -r line; do
-  decode "$line"
+  decode "$line" >> "$logs"
 done
