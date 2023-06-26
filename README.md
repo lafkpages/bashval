@@ -18,5 +18,5 @@ Finally, install `websocketd` from [here](https://github.com/joewalnes/websocket
 To run Bashval, use the following command:
 
 ```bash
-websocketd --port=4096 ./bashval.sh
+./main.sh
 ```
