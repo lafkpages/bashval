@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export proto="proto/api.proto"
+export proto="proto/goval.proto"
 export proto_client="proto/client.proto"
 
 if [ ! -f "$proto" ] || [ ! -f "$proto_client" ]; then
