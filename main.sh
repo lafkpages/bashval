@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if ! command -v protoc &> /dev/null
+then
+  echo "protoc not found, please download from https://github.com/protocolbuffers/protobuf/releases/" 1>&2
+  exit 1
+fi
+
 export proto="proto/goval.proto"
 export proto_client="proto/client.proto"
 

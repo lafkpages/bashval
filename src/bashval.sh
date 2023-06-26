@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if ! command -v protoc &> /dev/null
-then
-  echo "protoc not found, please download from https://github.com/protocolbuffers/protobuf/releases/" 1>&2
-  exit 1
-fi
-
 encode() {
   protoc --encode="${1:-goval.Command}" "$proto"
 }
