@@ -20,3 +20,5 @@ To run Bashval, use the following command:
 ```bash
 ./main.sh
 ```
+
+Then, use the Replit debug pane to override the Goval endpoint, and set it to `ws://localhost:4096`.
