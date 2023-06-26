@@ -2,4 +2,4 @@
 
 proto="api.proto"
 
-protoc --decode="$proto" "$proto" < test/demo_message.bin
+protoc --decode=api.Command "$proto" < test/demo_message.bin
