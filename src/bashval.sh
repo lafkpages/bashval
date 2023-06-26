@@ -21,6 +21,15 @@ decode() {
   protoc --decode=api.Command "$proto"
 }
 
+toast() {
+  encode <<- EOM
+channel: 0
+toast {
+  text: "$@"
+}
+EOM
+}
+
 # Initial ready message
 encode <<- EOM
 containerState {
