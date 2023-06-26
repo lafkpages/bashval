@@ -6,7 +6,7 @@ A Goval implementation, written in Bash.
 
 First, clone this repo.
 
-To use Bashval, first download Replit's protocol buffer definitions from [here](https://govaldocs.pages.dev/api.proto).
+To use Bashval, first download Replit's protocol buffer definitions from [here](https://raw.githubusercontent.com/Goval-Community/homeval/main/src/protobufs/goval.proto).
 Place the `api.proto` file in a folder called `proto`, in this repo's directory.
 
 Then, download and install `protoc` from [here](https://github.com/protocolbuffers/protobuf/releases/).
