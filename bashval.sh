@@ -13,6 +13,13 @@ fi
 
 proto="api.proto"
 
+# Initial ready message
+protoc --encode=api.Command "$proto" <<- EOM
+containerState {
+  state: READY
+}
+EOM
+
 while IFS='$\n' read -r line; do
   protoc --decode=api.Command "$proto" <<< "$line"
 done
