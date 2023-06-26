@@ -1,3 +1,3 @@
 #!/bin/bash
 
-websocketd --port=4096 --devconsole ./bashval.sh
+websocketd --port=4096 --devconsole ./src/bashval.sh
