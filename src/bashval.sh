@@ -11,7 +11,7 @@ if [ ! -f "api.proto" ]; then
   exit 1
 fi
 
-proto="api.proto"
+proto="proto/api.proto"
 
 # Initial ready message
 protoc --encode=api.Command "$proto" <<- EOM
