@@ -45,5 +45,5 @@ logs="bashval.log"
 echo -n "" > "$logs"
 
 while IFS='$\n' read -r line; do
-  decode "$line" >> "$logs"
+  decode <<< "$line" >> "$logs"
 done
