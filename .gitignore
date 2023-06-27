@@ -3,3 +3,4 @@
 bashval.log
 node_modules
 /src/protobuf
+/test/*log.txt
