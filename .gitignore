@@ -2,3 +2,4 @@
 /proto
 bashval.log
 node_modules
+/src/protobuf
