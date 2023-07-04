@@ -1,11 +1,11 @@
 #!/bin/bash
 
 encode() {
-  protoc --encode="${1:-goval.Command}" "$proto"
+  protoc --encode="${1:-goval.Command}" "$proto" | base64
 }
 
 decode() {
-  protoc --decode="${1:-goval.Command}" "$proto"
+  base64 -d | protoc --decode="${1:-goval.Command}" "$proto"
 }
 
 toast() {
