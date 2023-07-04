@@ -14,4 +14,4 @@ if [ ! -f "$proto" ] || [ ! -f "$proto_client" ]; then
   exit 1
 fi
 
-websocketd --port=4096 --devconsole -binary --passenv proto,proto_client,PATH ./src/bashval.sh
+websocketd-node --port 4096 --base64 ./src/bashval.sh

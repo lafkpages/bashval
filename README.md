@@ -4,14 +4,23 @@ A Goval implementation, written in Bash.
 
 ## Installation
 
-First, clone this repo.
+First, clone this repo:
+
+```sh
+git clone https://github.com/lafkpages/bashval.git
+cd bashval
+```
 
 To use Bashval, first download Replit's protocol buffer definitions from [here](https://raw.githubusercontent.com/Goval-Community/homeval/main/src/protobufs/goval.proto).
 Place the `api.proto` file in a folder called `proto`, in this repo's directory.
 
 Then, download and install `protoc` from [here](https://github.com/protocolbuffers/protobuf/releases/).
 
-Finally, install `websocketd` from [here](https://github.com/joewalnes/websocketd#download).
+Finally, install `websocketd-node`:
+
+```sh
+npm install -g websocketd-node
+```
 
 ## Usage
 
