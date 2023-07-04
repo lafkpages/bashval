@@ -26,6 +26,7 @@ EOM
 
 # Connection toast
 toast "Welcome to Bashval"
+echo "Someone connected" 1>&2
 
 # Logs file
 logs="bashval.log"
