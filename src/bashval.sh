@@ -33,5 +33,5 @@ logs="bashval.log"
 echo -n "" > "$logs"
 
 while IFS='$\n' read -r line; do
-  decode <<< "$line" >> "$logs"
+  msg=`decode <<< "$line"`
 done
