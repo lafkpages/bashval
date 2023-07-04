@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 encode() {
   protoc --encode="${1:-goval.Command}" "$proto" | base64
