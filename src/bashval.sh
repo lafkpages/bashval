@@ -33,5 +33,21 @@ logs="bashval.log"
 echo -n "" > "$logs"
 
 while IFS='$\n' read -r line; do
-  msg=`decode <<< "$line"`
+  msgProto=`decode <<< "$line"`
+  msg=`./src/proto2json.sh <<< "$msgProto" 2>/dev/null`
+
+  echo "$msgProto" >> "$logs"
+
+  if [ "$?" -ne 0 ]; then
+    echo "Failed to decode message:" 1>&2
+    echo "$msgProto" 1>&2
+    echo $'\n\n\n' >> "$logs"
+    continue
+  fi
+
+  echo "$msg" >> "$logs"
+  echo $'\n\n\n' >> "$logs"
+
+  # Do something with the message
+  
 done
