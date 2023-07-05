@@ -4,9 +4,12 @@ proto=`cat`
 
 json='{'
 
+isInProp=0
+
 for token in $proto; do
   if [[ "$token" =~ ([a-zA-Z]+): ]]; then
     json="$json\"${BASH_REMATCH[1]}\":"
+    isInProp=1
     continue
   fi
 
@@ -22,9 +25,17 @@ for token in $proto; do
       ;;
     \"*\")
       json="$json$token"
+      if [ "$isInProp" -eq 1 ]; then
+        json="$json,"
+        isInProp=0
+      fi
       ;;
     *)
       json="$json\"$token\""
+      if [ "$isInProp" -eq 1 ]; then
+        json="$json,"
+        isInProp=0
+      fi
       ;;
   esac
 done
