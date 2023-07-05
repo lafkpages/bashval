@@ -32,6 +32,12 @@ echo "Someone connected" 1>&2
 logs="bashval.log"
 echo -n "" > "$logs"
 
+# Channels
+declare -A channels
+
+# Last used channel ID
+lastChanId=0
+
 while IFS='$\n' read -r line; do
   msgProto=$(decode <<< "$line")
   msg=$(./src/proto2json.sh <<< "$msgProto" 2>/dev/null)
@@ -58,10 +64,29 @@ pong {}
 ref: "$ref"
 EOM
   elif [ ! "$(jq -M .openChan <<< "$msg")" = "null" ]; then
+    # Get channel service
+    service="$(jq -Mrc .openChan.service <<< "$msg")"
+
+    # Find next available channel ID
+    # (lastChanId plus one)
+    chanId="$((lastChanId + 1))"
+
+    # Logs
+    echo -n "Opening channel $chanId" 1>&2
+    echo -n $'\t' 1>&2
+    echo "with service $service" 1>&2
+
+    # Increment the last used channel ID
+    lastChanId="$chanId"
+
+    # Save channel
+    channels["$chanId"]="$(jq -Mrc .openChan <<< "$msg")"
+
+    # Send response
     encode <<- EOM
 session: 1
 openChanRes {
-  id: 1
+  id: $chanId
 }
 ref: "$ref"
 EOM
