@@ -22,11 +22,14 @@ decode() {
 }
 
 toast() {
+  # Encode message into JSON
+  msg=$(jq -MRc <<< "$@")
+
   # Shows a toast in the IDE
   ./src/utils/encode.sh <<- EOM
 channel: 0
 toast {
-  text: "$@"
+  text: $msg
 }
 EOM
 }
