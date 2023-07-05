@@ -155,3 +155,6 @@ EOM
     fi
   fi
 done
+
+# Exit
+echo $'[BASHVAL]\tExiting' 1>&2
