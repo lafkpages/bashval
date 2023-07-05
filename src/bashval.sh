@@ -111,8 +111,16 @@ EOM
       # Get service
       service="$(jq -Mrc .service <<< "$channel")"
 
-      # Call service
-      "./src/services/$service.sh" "$ref" "$chan" "$channel" "$msg"
+      # Service script
+      serviceScript="./src/services/$service.sh"
+
+      if [ -f "$serviceScript" ]; then
+        # Call service
+        "$serviceScript" "$ref" "$chan" "$channel" "$msg"
+      else
+        # Service not implemented
+        :
+      fi
     fi
   fi
 done
