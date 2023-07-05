@@ -48,6 +48,14 @@ while IFS='$\n' read -r line; do
   echo "$msg" >> "$logs"
   echo $'\n\n\n' >> "$logs"
 
+  # Message ref
+  ref=`jq -Mr .ref <<< "$msg"`
+
   # Do something with the message
-  
+  if [ ! `jq -M .ping <<< "$msg"` = "null" ]; then
+    encode <<- EOM
+pong {}
+ref: "$ref"
+EOM
+  fi
 done
