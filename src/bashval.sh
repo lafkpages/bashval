@@ -49,6 +49,7 @@ declare -A channels
 # Last used channel ID
 lastChanId=0
 
+# Main loop, one iteration per WS message
 while IFS='$\n' read -r line; do
   msgProto=$(decode <<< "$line")
   msg=$(./src/proto2json.sh <<< "$msgProto" 2>/dev/null)
