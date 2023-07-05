@@ -17,11 +17,6 @@ toast {
 EOM
 }
 
-# Import services
-for service in src/services/*.sh; do
-  source "$service"
-done
-
 # Initial ready message
 encode <<- EOM
 containerState {
@@ -103,5 +98,16 @@ openChanRes {
 ref: "$ref"
 EOM
     fi
+  else
+    # Get channel
+    channel="${channels[$chan]}"
+
+    # TODO: Handle channel not found
+
+    # Get service
+    service="$(jq -Mrc .service <<< "$channel")"
+
+    # Call service
+    "./src/services/$service.sh" "$ref" "$chan" "$channel" <<< "$msg"
   fi
 done
