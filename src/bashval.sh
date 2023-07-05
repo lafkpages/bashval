@@ -34,6 +34,62 @@ toast {
 EOM
 }
 
+# Get a channel by ID
+getChannel() {
+  chanId="$1"
+
+  # Send get command
+  nc localhost 4097 <<- EOM
+get $chanId
+
+EOM
+
+  # Read response
+  nc localhost 4097 < /dev/null
+}
+
+# Open a channel
+openChannel() {
+  # Channel data (.openChan)
+  channel="$1"
+
+  # Send open command
+  nc localhost 4097 <<- EOM
+open $channel
+
+EOM
+
+  # Read response
+  nc localhost 4097 < /dev/null
+}
+
+# Close a channel by ID
+closeChannel() {
+  # Channel ID
+  chanId="$1"
+
+  # Send close command
+  nc localhost 4097 <<- EOM
+close $chanId
+
+EOM
+
+  # Read response
+  nc localhost 4097 < /dev/null
+}
+
+# List channels
+listChannels() {
+  # Send list command
+  nc localhost 4097 <<- EOM
+list
+
+EOM
+
+  # Read response
+  nc localhost 4097 < /dev/null
+}
+
 # Initial ready message
 ./src/utils/encode.sh <<- EOM
 containerState {
@@ -49,12 +105,6 @@ echo "Someone connected" 1>&2
 # Logs file
 logs="bashval.log"
 echo -n "" > "$logs"
-
-# Channels
-declare -A channels
-
-# Last used channel ID
-lastChanId=0
 
 # Main loop, one iteration per WS message
 while IFS='$\n' read -r line; do
@@ -96,21 +146,14 @@ EOM
       # Get channel service
       service="$(jq -Mrc .openChan.service <<< "$msg")"
 
-      # Find next available channel ID
-      # (lastChanId plus one)
-      chanId="$((lastChanId + 1))"
+      # Open channel
+      chanId=$(openChannel "$(jq -Mrc .openChan <<< "$msg")")
 
       # Logs
       echo -n $'[CHAN0]\t\t' 1>&2
-      echo -n "Opening channel $chanId" 1>&2
+      echo -n "Opened channel $chanId" 1>&2
       echo -n $'\t' 1>&2
       echo "with service $service" 1>&2
-
-      # Increment the last used channel ID
-      lastChanId="$chanId"
-
-      # Save channel
-      channels["$chanId"]="$(jq -Mrc .openChan <<< "$msg")"
 
       # Send response
       ./src/utils/encode.sh <<- EOM
@@ -124,7 +167,7 @@ EOM
     fi
   else
     # Get channel
-    channel="${channels[$chan]}"
+    channel="$(getChannel "$chan")"
 
     if [ -z "$channel" ]; then
       # Channel not found
