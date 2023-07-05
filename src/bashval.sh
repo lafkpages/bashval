@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-encode() {
-  protoc --encode="${1:-goval.Command}" "$proto" | base64
-}
+alias encode='./src/utils/encode.sh'
 
 decode() {
   base64 -d | protoc --decode="${1:-goval.Command}" "$proto"
