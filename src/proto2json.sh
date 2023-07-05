@@ -20,6 +20,9 @@ for token in $proto; do
     ':')
       json="$json:"
       ;;
+    \"*\")
+      json="$json$token"
+      ;;
     *)
       json="$json\"$token\""
       ;;
