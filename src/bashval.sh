@@ -102,12 +102,16 @@ EOM
     # Get channel
     channel="${channels[$chan]}"
 
-    # TODO: Handle channel not found
+    if [ -z "$channel" ]; then
+      # Channel not found
 
-    # Get service
-    service="$(jq -Mrc .service <<< "$channel")"
+      # TODO: handle this
+    else
+      # Get service
+      service="$(jq -Mrc .service <<< "$channel")"
 
-    # Call service
-    "./src/services/$service.sh" "$ref" "$chan" "$channel" <<< "$msg"
+      # Call service
+      "./src/services/$service.sh" "$ref" "$chan" "$channel" <<< "$msg"
+    fi
   fi
 done
