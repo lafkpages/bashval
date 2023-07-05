@@ -20,6 +20,8 @@ writefile=$(jq -Mrc .write <<< "$msg")
 if [ -n "$readdir" ]; then
   path=$(jq -Mrc .readdir.path <<< "$msg")
 
+  echo $'[GCSFILES]\tReading directory\t' "$path" 1>&2
+
   files=$(ls -la "$path" | tail -n +4 | jq -MRc '{
     type: (
       match("^(.)").captures[0].string
