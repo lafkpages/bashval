@@ -14,4 +14,9 @@ if [ ! -f "$proto" ] || [ ! -f "$proto_client" ]; then
   exit 1
 fi
 
+{
+  sleep 0.5
+  echo
+} &
+
 websocketd-node --port 4096 --base64 ./src/bashval.sh

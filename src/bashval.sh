@@ -25,6 +25,7 @@ EOM
 
 # Connection toast
 toast "Welcome to Bashval"
+echo -n $'[BASHVAL]\t' 1>&2
 echo "Someone connected" 1>&2
 
 # Logs file
@@ -79,6 +80,7 @@ EOM
       chanId="$((lastChanId + 1))"
 
       # Logs
+      echo -n $'[CHAN0]\t\t' 1>&2
       echo -n "Opening channel $chanId" 1>&2
       echo -n $'\t' 1>&2
       echo "with service $service" 1>&2

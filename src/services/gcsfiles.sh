@@ -34,7 +34,8 @@ EOM
 
   path=$(jq -Mrc <<< "$pathRaw")
 
-  echo $'[GCSFILES]\tReading directory\t' "$path" 1>&2
+  echo -n $'[GCSFILES]\tReading directory\t' 1>&2
+  echo "$path" 1>&2
 
   files=$(ls -la "$path" | tail -n +4 | jq -MRc '{
     type: (
