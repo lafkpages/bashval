@@ -31,14 +31,25 @@ while IFS='$\n' read -r line; do
       lastChanId="$chanId"
       channels["$chanId"]="$args"
       echo "$chanId"
+
+      # Logs
+      echo $'[CHANNELS]\tOpened channel:\t' "$args" 1>&2
       ;;
 
     close)
       unset channels["$args"]
       echo "ok"
+
+      # Logs
+      echo $'[CHANNELS]\tClosed channel:\t' "$args" 1>&2
       ;;
 
     quit)
+      echo "ok"
+
+      # Logs
+      echo $'[CHANNELS]\tQuit' 1>&2
+
       break
       ;;
 
