@@ -32,7 +32,7 @@ if [ -n "$readdir" ]; then
   }' | jq -Mrcs '.' | \
   hjson -omitRootBraces -quoteAlways | \
   sed -e 's/type: "d"/type: DIRECTORY/' \
-    -e 's/type: "."/type: FILE/' -e '1d' -e '$d')
+    -e 's/type: "."/type: REGULAR/' -e '1d' -e '$d')
 
   ./src/utils/encode.sh <<- EOM
 ref: "$ref"
