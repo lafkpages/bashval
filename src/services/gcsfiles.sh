@@ -20,7 +20,7 @@ writefile=$(jq -Mrc .write <<< "$msg")
 if [ -n "$readdir" ]; then
   path=$(jq -Mrc .readdir.path <<< "$msg")
 
-  ls -la "$path" | tail -n +4 | jq -MRc '{
+  files=$(ls -la "$path" | tail -n +4 | jq -MRc '{
     type: (
       match("^(.)").captures[0].string
     ),
@@ -30,6 +30,15 @@ if [ -n "$readdir" ]; then
   }' | jq -Mrcs '.' | \
   hjson -omitRootBraces -quoteAlways | \
   sed -e 's/type: "d"/type: DIRECTORY/' \
-    -e 's/type: "."/type: FILE/' -e '1d' -e '$d' |
-  ./src/utils/encode.sh
+    -e 's/type: "."/type: FILE/' -e '1d' -e '$d')
+
+  ./src/utils/encode.sh <<- EOM
+ref: "$ref"
+channel: "$chan"
+files {
+  files {
+    $files
+  }
+}
+EOM
 fi
