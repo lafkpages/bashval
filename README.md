@@ -16,6 +16,8 @@ Place the `api.proto` file in a folder called `proto`, in this repo's directory.
 
 Then, download and install `protoc` from [here](https://github.com/protocolbuffers/protobuf/releases/).
 
+Also install `hjson` from [here](https://hjson.github.io/users-bin.html).
+
 Finally, install `websocketd-node`:
 
 ```sh
