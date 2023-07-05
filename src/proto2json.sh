@@ -45,8 +45,11 @@ json="$json}"
 # Remove trailing comma
 json=`sed -e 's/,}$/}/' <<< "$json"`
 
-# Output JSON
-echo "$json"
-#| jq -cM .
+# Make valid JSON
+json=`hjson -j <<< "$json"`
 
-# Piping through jq ensures that we're outputting valid JSON
+# Output JSON
+echo "$json" | jq -cM .
+
+# Piping through jq ensures that we're outputting valid JSON,
+# and also minifies the JSON.
