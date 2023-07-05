@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-alias encode='./src/utils/encode.sh'
+# TODO:
+# Make encode an alias for ./src/utils/encode.sh
 
 decode() {
   base64 -d | protoc --decode="${1:-goval.Command}" "$proto"
 }
 
 toast() {
-  encode <<- EOM
+  ./src/utils/encode.sh <<- EOM
 channel: 0
 toast {
   text: "$@"
@@ -16,7 +17,7 @@ EOM
 }
 
 # Initial ready message
-encode <<- EOM
+./src/utils/encode.sh <<- EOM
 containerState {
   state: READY
 }
@@ -64,7 +65,7 @@ while IFS='$\n' read -r line; do
   # Do something with the message
   if [ "$chan" = "0" ]; then
     if [ ! "$(jq -M .ping <<< "$msg")" = "null" ]; then
-      encode <<- EOM
+      ./src/utils/encode.sh <<- EOM
 pong {}
 ref: "$ref"
 EOM
@@ -88,7 +89,7 @@ EOM
       channels["$chanId"]="$(jq -Mrc .openChan <<< "$msg")"
 
       # Send response
-      encode <<- EOM
+      ./src/utils/encode.sh <<- EOM
 session: 1
 openChanRes {
   id: $chanId
@@ -104,6 +105,8 @@ EOM
       # Channel not found
 
       # TODO: handle this
+
+      :
     else
       # Get service
       service="$(jq -Mrc .service <<< "$channel")"
