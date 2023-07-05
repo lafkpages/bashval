@@ -109,7 +109,7 @@ EOM
       service="$(jq -Mrc .service <<< "$channel")"
 
       # Call service
-      "./src/services/$service.sh" "$ref" "$chan" "$channel" <<< "$msg"
+      "./src/services/$service.sh" "$ref" "$chan" "$channel" "$msg"
     fi
   fi
 done
