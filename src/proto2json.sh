@@ -35,6 +35,7 @@ json="$json}"
 json=`sed -e 's/,}$/}/' <<< "$json"`
 
 # Output JSON
-echo "$json" | jq -cM .
+echo "$json"
+#| jq -cM .
 
 # Piping through jq ensures that we're outputting valid JSON
