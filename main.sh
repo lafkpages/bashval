@@ -33,7 +33,7 @@ if [ -f "$channels_pid_file" ]; then
 fi
 
 # Start channels server
-./src/channels.sh &
+./src/channels.sh 2>/dev/null &
 channels_pid="$!"
 echo -n "$channels_pid" > "$channels_pid_file"
 
