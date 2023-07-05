@@ -129,6 +129,9 @@ EOM
 
       # TODO: handle this
 
+      # Logs
+      echo $'[CHAN'"$chan"$']\t\tChannel not found' 1>&2
+
       :
     else
       # Get service
