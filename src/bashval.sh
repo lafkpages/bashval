@@ -66,6 +66,7 @@ while IFS='$\n' read -r line; do
   if [ "$chan" = "0" ]; then
     if [ ! "$(jq -M .ping <<< "$msg")" = "null" ]; then
       ./src/utils/encode.sh <<- EOM
+channel: 0
 pong {}
 ref: "$ref"
 EOM
@@ -90,6 +91,7 @@ EOM
 
       # Send response
       ./src/utils/encode.sh <<- EOM
+channel: 0
 session: 1
 openChanRes {
   id: $chanId
