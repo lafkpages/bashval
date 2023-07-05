@@ -18,7 +18,20 @@ readfile=$(jq -Mrc .read <<< "$msg")
 writefile=$(jq -Mrc .write <<< "$msg")
 
 if [ -n "$readdir" ]; then
-  path=$(jq -Mrc .readdir.path <<< "$msg")
+  pathRaw=$(jq -Mc .readdir.path <<< "$msg")
+
+  if [ "$pathRaw" = "null" ]; then
+
+    # No path specified
+    echo -n $'[GCSFILES]\tNo path specified\t\n[GCSFILES]\t' 1>&2
+    echo "$msg" 1>&2
+    ./src/utils/encode.sh <<- EOM
+ref: "$ref"
+channel: $chan
+error: "No path specified"
+EOM
+    exit 1
+  fi
 
   echo $'[GCSFILES]\tReading directory\t' "$path" 1>&2
 
@@ -37,7 +50,7 @@ if [ -n "$readdir" ]; then
 
   ./src/utils/encode.sh <<- EOM
 ref: "$ref"
-channel: "$chan"
+channel: $chan
 files {
   $files
 }
