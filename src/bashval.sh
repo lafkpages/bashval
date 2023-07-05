@@ -133,8 +133,6 @@ EOM
 
       # Logs
       echo $'[CHAN'"$chan"$']\t\tChannel not found' 1>&2
-
-      :
     else
       # Get service
       service="$(jq -Mrc .service <<< "$channel")"
