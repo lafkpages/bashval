@@ -22,6 +22,7 @@ decode() {
 }
 
 toast() {
+  # Shows a toast in the IDE
   ./src/utils/encode.sh <<- EOM
 channel: 0
 toast {
