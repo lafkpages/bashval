@@ -52,9 +52,17 @@ while IFS='$\n' read -r line; do
   ref=$(jq -Mr .ref <<< "$msg")
 
   # Do something with the message
-  if [ ! $(jq -M .ping <<< "$msg") = "null" ]; then
+  if [ ! "$(jq -M .ping <<< "$msg")" = "null" ]; then
     encode <<- EOM
 pong {}
+ref: "$ref"
+EOM
+  elif [ ! "$(jq -M .openChan <<< "$msg")" = "null" ]; then
+    encode <<- EOM
+session: 1
+openChanRes {
+  id: 1
+}
 ref: "$ref"
 EOM
   fi
