@@ -148,7 +148,7 @@ EOM
         "$serviceScript" "$ref" "$chan" "$channel" "$msg"
       else
         # Service not implemented
-        :
+        echo $'[CHAN'"$chan"$']\t\t'"${service^^} not implemented" 1>&2
       fi
     fi
   fi
