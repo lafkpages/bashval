@@ -8,6 +8,10 @@ chan="$2"
 channel="$3"
 msg="$4"
 
+# Logs
+echo -n $'[EXEC]\t' 1>&2
+echo "Execing something..." 1>&2
+
 # Send state message
 ./src/utils/encode.sh <<- EOM
 channel: $chan
