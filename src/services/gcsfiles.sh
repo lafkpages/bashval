@@ -22,7 +22,7 @@ if [ -n "$readdir" ]; then
 
   echo $'[GCSFILES]\tReading directory\t' "$path" 1>&2
 
-  files=$(ls -la "$path" | tail -n +4 | jq -MRc '{
+  files=$(ls -la "." | tail -n +4 | jq -MRc '{
     type: (
       match("^(.)").captures[0].string
     ),
@@ -32,15 +32,14 @@ if [ -n "$readdir" ]; then
   }' | jq -Mrcs '.' | \
   hjson -omitRootBraces -quoteAlways | \
   sed -e 's/type: "d"/type: DIRECTORY/' \
-    -e 's/type: "."/type: REGULAR/' -e '1d' -e '$d')
+    -e 's/type: "."/type: REGULAR/' -e '1d' \
+    -e '$d' -e 's/^  {/  files {/')
 
   ./src/utils/encode.sh <<- EOM
 ref: "$ref"
 channel: "$chan"
 files {
-  files {
-    $files
-  }
+  $files
 }
 EOM
 fi
