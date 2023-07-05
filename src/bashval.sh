@@ -4,7 +4,18 @@
 # Make encode an alias for ./src/utils/encode.sh
 
 decode() {
-  base64 -d | protoc --decode="${1:-goval.Command}" "$proto"
+  {
+    IFS=$'\n' read -r -d '' CAPTURED_STDERR;
+    IFS=$'\n' read -r -d '' CAPTURED_STDOUT;
+  } < <((printf '\0%s\0' "$(base64 -d | protoc --decode="${1:-goval.Command}" "$proto")" 1>&2) 2>&1)
+
+  if [ -n "$CAPTURED_STDERR" ]; then
+    echo -n $'[BASHVAL]\t' 1>&2
+    echo "decode(): $CAPTURED_STDERR" 1>&2
+    return 1
+  fi
+
+  echo -n "$CAPTURED_STDOUT"
 }
 
 toast() {
