@@ -61,11 +61,13 @@ while IFS='$\n' read -r line; do
   msgProto=$(decode <<< "$line")
   msg=$(./src/proto2json.sh <<< "$msgProto" 2>/dev/null)
 
+  decodeStatus="$?"
+
   echo "$msgProto" >> "$logs"
 
-  if [ "$?" -ne 0 ]; then
-    echo "Failed to decode message:" 1>&2
-    echo "$msgProto" 1>&2
+  if [ "$decodeStatus" -ne 0 ]; then
+    echo $'[BASHVAL]\t'"Failed to decode message:" 1>&2
+    echo $'[BASHVAL]\t'"$msgProto" 1>&2
     echo $'\n\n\n' >> "$logs"
     continue
   fi
