@@ -24,5 +24,22 @@ fi
   echo
 } &
 
+# Channels server PID file
+channels_pid_file="runtime/channels.pid"
+
+# Kill old channels server
+if [ -f "$channels_pid_file" ]; then
+  kill "$(cat "$channels_pid_file")"
+fi
+
+# Start channels server
+./src/channels.sh &
+channels_pid="$!"
+echo -n "$channels_pid" > "$channels_pid_file"
+
 # Start WebSocket server
 websocketd-node --port 4096 --base64 ./src/bashval.sh
+
+# Kill channels server
+kill "$channels_pid"
+rm "$channels_pid_file"
