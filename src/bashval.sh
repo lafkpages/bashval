@@ -138,6 +138,9 @@ EOM
       serviceScript="./src/services/$service.sh"
 
       if [ -f "$serviceScript" ]; then
+        # Logs
+        echo $'[CHAN'"$chan"$']\t\t'"${service^^}" 1>&2
+
         # Call service
         "$serviceScript" "$ref" "$chan" "$channel" "$msg"
       else
