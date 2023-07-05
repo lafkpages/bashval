@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-proto=`cat`
+proto=$(cat)
 
 json='{'
 
@@ -43,10 +43,10 @@ done
 json="$json}"
 
 # Remove trailing comma
-json=`sed -e 's/,}$/}/' <<< "$json"`
+json=$(sed -e 's/,}$/}/' <<< "$json")
 
 # Make valid JSON
-json=`hjson -j <<< "$json"`
+json=$(hjson -j <<< "$json")
 
 # Output JSON
 echo "$json" | jq -cM .

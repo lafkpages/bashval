@@ -33,8 +33,8 @@ logs="bashval.log"
 echo -n "" > "$logs"
 
 while IFS='$\n' read -r line; do
-  msgProto=`decode <<< "$line"`
-  msg=`./src/proto2json.sh <<< "$msgProto" 2>/dev/null`
+  msgProto=$(decode <<< "$line")
+  msg=$(./src/proto2json.sh <<< "$msgProto" 2>/dev/null)
 
   echo "$msgProto" >> "$logs"
 
@@ -49,10 +49,10 @@ while IFS='$\n' read -r line; do
   echo $'\n\n\n' >> "$logs"
 
   # Message ref
-  ref=`jq -Mr .ref <<< "$msg"`
+  ref=$(jq -Mr .ref <<< "$msg")
 
   # Do something with the message
-  if [ ! `jq -M .ping <<< "$msg"` = "null" ]; then
+  if [ ! $(jq -M .ping <<< "$msg") = "null" ]; then
     encode <<- EOM
 pong {}
 ref: "$ref"
