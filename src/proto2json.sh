@@ -42,9 +42,6 @@ done
 
 json="$json}"
 
-# Remove trailing comma
-json=$(sed -e 's/,}$/}/' <<< "$json")
-
 # Make valid JSON
 json=$(hjson -j <<< "$json")
 
