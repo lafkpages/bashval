@@ -98,6 +98,10 @@ statRes {
   size: $size
 }
 EOM
+
+    # Logs
+    echo -n $'[GCSFILES]\tFile found\t' 1>&2
+    echo "$path" 1>&2
   else
     # File not found
     ./src/utils/encode.sh <<- EOM
@@ -107,5 +111,9 @@ statRes {
   exists: false
 }
 EOM
+
+    # Logs
+    echo -n $'[GCSFILES]\tFile not found\t' 1>&2
+    echo "$path" 1>&2
   fi
 fi
