@@ -89,14 +89,14 @@ EOM
 
     # Send response
     ./src/utils/encode.sh <<- EOM
-ref: "$ref"
 channel: $chan
 statRes {
   exists: true
-  modTime: $modTime
-  fileMode: "$fileMode"
   size: $size
+  fileMode: "$fileMode"
+  modTime: $modTime
 }
+ref: "$ref"
 EOM
 
     # Logs
