@@ -77,7 +77,7 @@ EOM
 
   path=$(jq -Mrc <<< "$pathRaw")
 
-  echo -n $'[GCSFILES]\tStatting file\t' 1>&2
+  echo -n $'[GCSFILES]\tStatting file\t\t' 1>&2
   echo "$path" 1>&2
 
   # Stat file
@@ -100,7 +100,7 @@ ref: "$ref"
 EOM
 
     # Logs
-    echo -n $'[GCSFILES]\tFile found\t' 1>&2
+    echo -n $'[GCSFILES]\tFile found\t\t' 1>&2
     echo "$path" 1>&2
   else
     # File not found
@@ -113,7 +113,7 @@ statRes {
 EOM
 
     # Logs
-    echo -n $'[GCSFILES]\tFile not found\t' 1>&2
+    echo -n $'[GCSFILES]\tFile not found\t\t' 1>&2
     echo "$path" 1>&2
   fi
 fi
