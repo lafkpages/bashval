@@ -85,7 +85,7 @@ EOM
   statCode="$?"
 
   if [ "$statCode" = "0" ]; then
-    echo -n "$stat" | awk '{ print $1 " " $3 " " $8 }' | read -r modTime fileMode size
+    read -r modTime fileMode size extra <<< $(echo "$stat" | awk '{ print $1 " " $3 " " $8 }')
 
     # Send response
     ./src/utils/encode.sh <<- EOM
