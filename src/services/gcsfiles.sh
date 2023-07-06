@@ -81,7 +81,7 @@ EOM
   echo "$path" 1>&2
 
   # Stat file
-  stat=$(stat "$path")
+  stat=$(stat "$path" 2>/dev/null)
   statCode="$?"
 
   if [ "$statCode" = "0" ]; then
