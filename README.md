@@ -21,7 +21,7 @@ Also install `hjson` from [here](https://hjson.github.io/users-bin.html).
 Finally, install `websocketd-node`:
 
 ```sh
-npm install -g websocketd-node
+npm install -g websocketd-node@^1.1.0
 ```
 
 ## Usage
