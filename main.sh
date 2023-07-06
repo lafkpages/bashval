@@ -17,13 +17,6 @@ if [ ! -f "$proto" ] || [ ! -f "$proto_client" ]; then
   exit 1
 fi
 
-# Log a newline after WebSocket server starts,
-# for prettier logs
-{
-  sleep 0.5
-  echo
-} &
-
 # Channels server PID file
 channels_pid_file="runtime/channels.pid"
 
