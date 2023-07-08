@@ -1,0 +1,16 @@
+{
+  "name": "bashval",
+  "version": "0.0.1",
+  "description": "A Goval implementation, written in Bash.",
+  "scripts": [
+    "main.sh",
+    "src/bashval.sh",
+    "src/channels.sh",
+    "src/proto2json.sh",
+    "src/utils/encode.sh",
+    "src/services/exec.sh",
+    "src/services/gcsfiles.sh"
+  ],
+  "files": ["README.md"],
+  "repo": "lafkpages/bashval"
+}
