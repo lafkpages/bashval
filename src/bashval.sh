@@ -109,7 +109,7 @@ echo -n "" >"$logs"
 # Main loop, one iteration per WS message
 while IFS='$\n' read -r line; do
   msgProto=$(decode <<<"$line")
-  msg=$(./src/proto2json.sh <<<"$msgProto" 2>/dev/null)
+  msg=$(./src/proto2json.sh <<<"$msgProto")
 
   decodeStatus="$?"
 
