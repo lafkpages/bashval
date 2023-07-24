@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO: this is dumb.
-# Just use a normal Protobuf transformer like https://github.com/iamazeem/proto-convert
-
 json='{'
 
 isInString=0
