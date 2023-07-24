@@ -14,21 +14,12 @@ while IFS="" read -n1 char; do
     if [ "$char" = '"' ]; then
       isInString=0
     fi
-
-    continue
-  fi
-
-  if [ "$char" = "\"" ]; then
+  elif [ "$char" = "\"" ]; then
     isInString=1
     currentToken="$currentToken$char"
-    continue
-  fi
-
-  if [ "$char" = " " ]; then
-    continue
-  fi
-
-  if [ "$char" = "" ]; then
+  elif [ "$char" = " " ]; then
+    :
+  elif [ "$char" = "" ]; then
     if [ "$shouldSkipNlComma" = 1 ]; then
       json="$json$currentToken"
       shouldSkipNlComma=0
@@ -36,28 +27,19 @@ while IFS="" read -n1 char; do
       json="$json$currentToken,"
     fi
     currentToken=""
-  fi
-
-  if [ "$char" = ':' ]; then
+  elif [ "$char" = ':' ]; then
     json="$json\"$currentToken\":"
     currentToken=""
-    continue
-  fi
-
-  if [ "$char" = "{" ]; then
+  elif [ "$char" = "{" ]; then
     json="$json\"$currentToken\":{"
     currentToken=""
     shouldSkipNlComma=1
-    continue
-  fi
-
-  if [ "$char" = "}" ]; then
+  elif [ "$char" = "}" ]; then
     json="${json%,}}"
     currentToken=""
-    continue
+  else
+    currentToken="$currentToken$char"
   fi
-
-  currentToken="$currentToken$char"
 done
 
 json="${json%,}}"
