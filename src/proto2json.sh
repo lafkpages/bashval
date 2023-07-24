@@ -3,44 +3,58 @@
 # TODO: this is dumb.
 # Just use a normal Protobuf transformer like https://github.com/iamazeem/proto-convert
 
-proto=$(cat)
-
 json='{'
 
-isInProp=0
+isInString=0
+shouldSkipNlComma=0
 
-for token in $proto; do
-  if [[ "$token" =~ ([a-zA-Z]+): ]]; then
-    json="$json\"${BASH_REMATCH[1]}\":"
-    isInProp=1
+currentToken=""
+
+while IFS="" read -n1 char; do
+  if [ "$isInString" = 1 ]; then
+    currentToken="$currentToken$char"
+
+    if [ "$char" = '"' ]; then
+      isInString=0
+    fi
+
     continue
   fi
 
-  case "$token" in
-  '{')
-    json="$json:{"
-    ;;
-  '}')
-    json="${json%,}},"
-    ;;
-  ':')
-    json="$json:"
-    ;;
-  \"*\")
-    json="$json$token"
-    if [ "$isInProp" -eq 1 ]; then
-      json="$json,"
-      isInProp=0
+  if [ "$char" = " " ]; then
+    continue
+  fi
+
+  if [ "$char" = "" ]; then
+    if [ "$shouldSkipNlComma" = 1 ]; then
+      json="$json$currentToken"
+      shouldSkipNlComma=0
+    else
+      json="$json$currentToken,"
     fi
-    ;;
-  *)
-    json="$json\"$token\""
-    if [ "$isInProp" -eq 1 ]; then
-      json="$json,"
-      isInProp=0
-    fi
-    ;;
-  esac
+    currentToken=""
+  fi
+
+  if [ "$char" = ':' ]; then
+    json="$json\"$currentToken\":"
+    currentToken=""
+    continue
+  fi
+
+  if [ "$char" = "{" ]; then
+    json="$json\"$currentToken\":{"
+    currentToken=""
+    shouldSkipNlComma=1
+    continue
+  fi
+
+  if [ "$char" = "}" ]; then
+    json="${json%,}}"
+    currentToken=""
+    continue
+  fi
+
+  currentToken="$currentToken$char"
 done
 
 echo "${json%,}}" | jq -Mnc --stream -f src/utils/dupekeys.jq
