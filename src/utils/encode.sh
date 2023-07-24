@@ -6,3 +6,6 @@
 encode() {
   protoc --encode="${1:-goval.Command}" "$proto" | base64
 }
+
+# Export the function
+export -f encode
