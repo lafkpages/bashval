@@ -188,7 +188,7 @@ EOM
         echo $'[CHAN'"$chan"$']\t\t'"${service^^}" 1>&2
 
         # Call service
-        "$serviceScript" "$ref" "$chan" "$channel" "$msg"
+        source "$serviceScript"
       else
         # Service not implemented
         echo $'[CHAN'"$chan"$']\t\t'"${service^^} not implemented" 1>&2
