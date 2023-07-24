@@ -5,6 +5,7 @@ json='{'
 isInString=0
 isAfterColon=0
 shouldSkipNlComma=0
+isQuotingEnum=0
 
 currentToken=""
 
@@ -15,35 +16,43 @@ while IFS="" read -n1 char; do
     if [ "$char" = '"' ]; then
       isInString=0
     fi
-  elif [ "$char" = "\"" ]; then
-    isInString=1
-    currentToken="$currentToken$char"
-  elif [ "$char" = " " ]; then
-    :
-  elif [ "$char" = "" ]; then
-    if [ "$shouldSkipNlComma" = 1 ]; then
-      json="$json$currentToken"
-      shouldSkipNlComma=0
-    else
-      json="$json$currentToken,"
-    fi
-    currentToken=""
-  elif [ "$char" = ':' ]; then
-    json="$json\"$currentToken\":"
-    currentToken=""
-    isAfterColon=1
-  elif [ "$char" = "{" ]; then
-    json="$json\"$currentToken\":{"
-    currentToken=""
-    shouldSkipNlComma=1
-  elif [ "$char" = "}" ]; then
-    json="${json%,}}"
-    currentToken=""
   else
-    if [ "$isAfterColon" = 1 ]; then
-      currentToken="$currentToken\"$char"
-    else
+    if [ "$isQuotingEnum" = 1 ] && [[ ! "$char" =~ [a-zA-Z_] ]]; then
+      isQuotingEnum=0
+      currentToken="$currentToken\""
+    fi
+
+    if [ "$char" = "\"" ]; then
+      isInString=1
       currentToken="$currentToken$char"
+    elif [ "$char" = " " ]; then
+      :
+    elif [ "$char" = "" ]; then
+      if [ "$shouldSkipNlComma" = 1 ]; then
+        json="$json$currentToken"
+        shouldSkipNlComma=0
+      else
+        json="$json$currentToken,"
+      fi
+      currentToken=""
+    elif [ "$char" = ':' ]; then
+      json="$json\"$currentToken\":"
+      currentToken=""
+      isAfterColon=1
+    elif [ "$char" = "{" ]; then
+      json="$json\"$currentToken\":{"
+      currentToken=""
+      shouldSkipNlComma=1
+    elif [ "$char" = "}" ]; then
+      json="${json%,}}"
+      currentToken=""
+    else
+      if [ "$isAfterColon" = 1 ]; then
+        currentToken="$currentToken\"$char"
+        isQuotingEnum=1
+      else
+        currentToken="$currentToken$char"
+      fi
     fi
   fi
 
