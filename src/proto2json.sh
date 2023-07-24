@@ -3,6 +3,7 @@
 json='{'
 
 isInString=0
+isAfterColon=0
 shouldSkipNlComma=0
 
 currentToken=""
@@ -30,6 +31,7 @@ while IFS="" read -n1 char; do
   elif [ "$char" = ':' ]; then
     json="$json\"$currentToken\":"
     currentToken=""
+    isAfterColon=1
   elif [ "$char" = "{" ]; then
     json="$json\"$currentToken\":{"
     currentToken=""
@@ -38,7 +40,17 @@ while IFS="" read -n1 char; do
     json="${json%,}}"
     currentToken=""
   else
-    currentToken="$currentToken$char"
+    if [ "$isAfterColon" = 1 ]; then
+      currentToken="$currentToken\"$char"
+    else
+      currentToken="$currentToken$char"
+    fi
+  fi
+
+  if [ "$char" = ":" ] || [ "$char" = " " ]; then
+    :
+  else
+    isAfterColon=0
   fi
 done
 
