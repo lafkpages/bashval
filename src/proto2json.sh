@@ -18,6 +18,12 @@ while IFS="" read -n1 char; do
     continue
   fi
 
+  if [ "$char" = "\"" ]; then
+    isInString=1
+    currentToken="$currentToken$char"
+    continue
+  fi
+
   if [ "$char" = " " ]; then
     continue
   fi
