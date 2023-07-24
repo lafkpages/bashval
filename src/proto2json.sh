@@ -61,6 +61,6 @@ jsonWithDupes=$(jq -Mnc --stream -f src/utils/dupekeys.jq <<<"$json")
 if [ "$?" = 0 ]; then
   echo "$jsonWithDupes"
 else
-  echo "$json"
+  echo "$json" 1>&2
   exit "$?"
 fi
