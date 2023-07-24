@@ -1,4 +1,5 @@
 openChan {
   service: "fsevents"
+  action: ATTACH
 }
 ref: "1pgpyakhzq2"
