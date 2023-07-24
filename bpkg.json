@@ -14,7 +14,7 @@
   "files": ["README.md"],
   "repo": "lafkpages/bashval",
   "dependencies": {
-    "lafkpages/protobuf-parser-bash": "1.1.1"
+    "lafkpages/protobuf-parser-bash": "1.1.2"
   },
   "commands": {
     "bashval": "./main.sh"
