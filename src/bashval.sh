@@ -118,6 +118,7 @@ while IFS='$\n' read -r line; do
   if [ "$decodeStatus" -ne 0 ]; then
     echo $'[BASHVAL]\t'"Failed to decode message ($decodeStatus):" 1>&2
     echo $'[BASHVAL]\t'"$msgProto" 1>&2
+    echo $'[BASHVAL]\t'"$msg" 1>&2
     echo $'\n\n\n' >>"$logs"
     continue
   fi
