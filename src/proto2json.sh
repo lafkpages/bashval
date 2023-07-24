@@ -54,4 +54,13 @@ while IFS="" read -n1 char; do
   currentToken="$currentToken$char"
 done
 
-echo "${json%,}}" | jq -Mnc --stream -f src/utils/dupekeys.jq
+json="${json%,}}"
+
+jsonWithDupes=$(jq -Mnc --stream -f src/utils/dupekeys.jq <<<"$json")
+
+if [ "$?" = 0 ]; then
+  echo "$jsonWithDupes"
+else
+  echo "$json"
+  exit "$?"
+fi
