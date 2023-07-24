@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# TODO:
-# Make encode an alias for ./src/utils/encode.sh
+# Load the encode util function
+source ./src/utils/encode.sh
 
 decode() {
   # Decode from base64, then from protobuf
   {
-    IFS=$'\n' read -r -d '' CAPTURED_STDERR;
-    IFS=$'\n' read -r -d '' CAPTURED_STDOUT;
+    IFS=$'\n' read -r -d '' CAPTURED_STDERR
+    IFS=$'\n' read -r -d '' CAPTURED_STDOUT
   } < <((printf '\0%s\0' "$(base64 -d | protoc --decode="${1:-goval.Command}" "$proto")" 1>&2) 2>&1)
 
   # Log errors
@@ -23,10 +23,10 @@ decode() {
 
 toast() {
   # Encode message into JSON
-  msg=$(jq -MRc <<< "$@")
+  msg=$(jq -MRc <<<"$@")
 
   # Shows a toast in the IDE
-  ./src/utils/encode.sh <<- EOM
+  encode <<-EOM
 channel: 0
 toast {
   text: $msg
@@ -39,13 +39,13 @@ getChannel() {
   chanId="$1"
 
   # Send get command
-  nc localhost 4097 <<- EOM
+  nc localhost 4097 <<-EOM
 get $chanId
 
 EOM
 
   # Read response
-  nc localhost 4097 < /dev/null
+  nc localhost 4097 </dev/null
 }
 
 # Open a channel
@@ -54,13 +54,13 @@ openChannel() {
   channel="$1"
 
   # Send open command
-  nc localhost 4097 <<- EOM
+  nc localhost 4097 <<-EOM
 open $channel
 
 EOM
 
   # Read response
-  nc localhost 4097 < /dev/null
+  nc localhost 4097 </dev/null
 }
 
 # Close a channel by ID
@@ -69,29 +69,29 @@ closeChannel() {
   chanId="$1"
 
   # Send close command
-  nc localhost 4097 <<- EOM
+  nc localhost 4097 <<-EOM
 close $chanId
 
 EOM
 
   # Read response
-  nc localhost 4097 < /dev/null
+  nc localhost 4097 </dev/null
 }
 
 # List channels
 listChannels() {
   # Send list command
-  nc localhost 4097 <<- EOM
+  nc localhost 4097 <<-EOM
 list
 
 EOM
 
   # Read response
-  nc localhost 4097 < /dev/null
+  nc localhost 4097 </dev/null
 }
 
 # Initial ready message
-./src/utils/encode.sh <<- EOM
+encode <<-EOM
 containerState {
   state: READY
 }
@@ -104,50 +104,50 @@ echo "Someone connected" 1>&2
 
 # Logs file
 logs="bashval.log"
-echo -n "" > "$logs"
+echo -n "" >"$logs"
 
 # Main loop, one iteration per WS message
 while IFS='$\n' read -r line; do
-  msgProto=$(decode <<< "$line")
-  msg=$(./src/proto2json.sh <<< "$msgProto" 2>/dev/null)
+  msgProto=$(decode <<<"$line")
+  msg=$(./src/proto2json.sh <<<"$msgProto" 2>/dev/null)
 
   decodeStatus="$?"
 
-  echo "$msgProto" >> "$logs"
+  echo "$msgProto" >>"$logs"
 
   if [ "$decodeStatus" -ne 0 ]; then
     echo $'[BASHVAL]\t'"Failed to decode message:" 1>&2
     echo $'[BASHVAL]\t'"$msgProto" 1>&2
-    echo $'\n\n\n' >> "$logs"
+    echo $'\n\n\n' >>"$logs"
     continue
   fi
 
-  echo "$msg" >> "$logs"
-  echo $'\n\n\n' >> "$logs"
+  echo "$msg" >>"$logs"
+  echo $'\n\n\n' >>"$logs"
 
   # Message ref
-  ref=$(jq -Mr .ref <<< "$msg")
+  ref=$(jq -Mr .ref <<<"$msg")
 
   # Message channel
-  chan="$(jq -Mr .channel <<< "$msg")"
+  chan="$(jq -Mr .channel <<<"$msg")"
   if [ "$chan" = "null" ] || [ -z "$chan" ]; then
     chan="0"
   fi
 
   # Do something with the message
   if [ "$chan" = "0" ]; then
-    if [ ! "$(jq -M .ping <<< "$msg")" = "null" ]; then
-      ./src/utils/encode.sh <<- EOM
+    if [ ! "$(jq -M .ping <<<"$msg")" = "null" ]; then
+      encode <<-EOM
 channel: 0
 pong {}
 ref: "$ref"
 EOM
-    elif [ ! "$(jq -M .openChan <<< "$msg")" = "null" ]; then
+    elif [ ! "$(jq -M .openChan <<<"$msg")" = "null" ]; then
       # Get channel service
-      service="$(jq -Mrc .openChan.service <<< "$msg")"
+      service="$(jq -Mrc .openChan.service <<<"$msg")"
 
       # Open channel
-      chanId=$(openChannel "$(jq -Mrc .openChan <<< "$msg")")
+      chanId=$(openChannel "$(jq -Mrc .openChan <<<"$msg")")
 
       # Logs
       echo -n $'[CHAN0]\t\t' 1>&2
@@ -156,7 +156,7 @@ EOM
       echo "with service $service" 1>&2
 
       # Send response
-      ./src/utils/encode.sh <<- EOM
+      encode <<-EOM
 channel: 0
 session: 1
 openChanRes {
@@ -178,7 +178,7 @@ EOM
       echo $'[CHAN'"$chan"$']\t\tChannel not found' 1>&2
     else
       # Get service
-      service="$(jq -Mrc .service <<< "$channel")"
+      service="$(jq -Mrc .service <<<"$channel")"
 
       # Service script
       serviceScript="./src/services/$service.sh"
