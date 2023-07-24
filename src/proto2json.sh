@@ -16,40 +16,31 @@ for token in $proto; do
     continue
   fi
 
-  case "$token" in 
-    '{')
-      json="$json:{"
-      ;;
-    '}')
-      json="$json},"
-      ;;
-    ':')
-      json="$json:"
-      ;;
-    \"*\")
-      json="$json$token"
-      if [ "$isInProp" -eq 1 ]; then
-        json="$json,"
-        isInProp=0
-      fi
-      ;;
-    *)
-      json="$json\"$token\""
-      if [ "$isInProp" -eq 1 ]; then
-        json="$json,"
-        isInProp=0
-      fi
-      ;;
+  case "$token" in
+  '{')
+    json="$json:{"
+    ;;
+  '}')
+    json="${json%,}},"
+    ;;
+  ':')
+    json="$json:"
+    ;;
+  \"*\")
+    json="$json$token"
+    if [ "$isInProp" -eq 1 ]; then
+      json="$json,"
+      isInProp=0
+    fi
+    ;;
+  *)
+    json="$json\"$token\""
+    if [ "$isInProp" -eq 1 ]; then
+      json="$json,"
+      isInProp=0
+    fi
+    ;;
   esac
 done
 
-json="$json}"
-
-# Make valid JSON
-json=$(hjson -j <<< "$json")
-
-# Output JSON
-echo "$json" | jq -cM .
-
-# Piping through jq ensures that we're outputting valid JSON,
-# and also minifies the JSON.
+echo "${json%,}}" | jq -Mnc --stream -f src/utils/dupekeys.jq
