@@ -15,5 +15,8 @@
   "repo": "lafkpages/bashval",
   "dependencies": {
     "lafkpages/protobuf-parser-bash": "1.1.0"
+  },
+  "commands": {
+    "bashval": "./main.sh"
   }
 }
