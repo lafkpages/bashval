@@ -4,7 +4,7 @@
 # A simple service for executing shell commands, one at a time.
 
 # Logs
-echo -n $'[EXEC]\t' 1>&2
+echo -n $'[EXEC]\t\t' 1>&2
 echo "Execing something..." 1>&2
 
 # Send state message
@@ -17,7 +17,7 @@ EOM
 readarray -t args < <(jq -Mc '.exec.args[]' <<<"$msg")
 
 # Logs
-echo $'[EXEC]\tRunning command\t' "${args[0]}" 1>&2
+echo $'[EXEC]\t\tRunning command\t' "${args[0]}" 1>&2
 
 # Run the command, capturing stdout and stderr
 {
