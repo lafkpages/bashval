@@ -6,7 +6,6 @@
     "main.sh",
     "src/bashval.sh",
     "src/channels.sh",
-    "src/proto2json.sh",
     "src/utils/encode.sh",
     "src/services/exec.sh",
     "src/services/gcsfiles.sh"
