@@ -5,7 +5,7 @@
   "scripts": [
     "main.sh",
     "src/bashval.sh",
-    "src/channels.sh",
+    "src/utils/channels.sh",
     "src/utils/encode.sh",
     "src/services/exec.sh",
     "src/services/gcsfiles.sh"

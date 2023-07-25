@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Ensure protoc is installed
-if ! command -v protoc &> /dev/null
-then
+if ! command -v protoc &>/dev/null; then
   echo "protoc not found, please download from https://github.com/protocolbuffers/protobuf/releases/" 1>&2
   exit 1
 fi
@@ -26,9 +25,9 @@ if [ -f "$channels_pid_file" ]; then
 fi
 
 # Start channels server
-./src/channels.sh 2>/dev/null &
+./src/utils/channels.sh 2>/dev/null &
 channels_pid="$!"
-echo -n "$channels_pid" > "$channels_pid_file"
+echo -n "$channels_pid" >"$channels_pid_file"
 
 # Start WebSocket server
 websocketd-node --port 4096 --base64 ./src/bashval.sh
