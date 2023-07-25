@@ -111,4 +111,51 @@ EOM
     echo -n $'[GCSFILES]\tFile not found\t\t' 1>&2
     echo "$path" 1>&2
   fi
+
+elif [ ! "$readfile" = "null" ]; then
+  pathRaw=$(jq -Mc .path <<<"$readfile")
+
+  if [ "$pathRaw" = "null" ] || [ -z "$pathRaw" ]; then
+    # No path specified
+    echo -n $'[GCSFILES]\tNo path specified\t\n[GCSFILES]\t' 1>&2
+    echo "$msg" 1>&2
+    encode <<-EOM
+ref: "$ref"
+channel: $chan
+error: "No path specified"
+EOM
+    exit 1
+  fi
+
+  path=$(jq -Mrc <<<"$pathRaw")
+
+  echo -n $'[GCSFILES]\tReading file\t\t' 1>&2
+  echo "$path" 1>&2
+
+  # Read file
+  file=$(base64 "$path" 2>/dev/null)
+  fileCode="$?"
+
+  if [ "$fileCode" = "0" ]; then
+    # Send response
+    encode <<-EOM
+ref: "$ref"
+channel: $chan
+file {
+  content: "$file"
+}
+EOM
+
+    # Logs
+    echo -n $'[GCSFILES]\tFile found\t\t' 1>&2
+    echo "$path" 1>&2
+  else
+    # File not found
+    encode <<-EOM
+ref: "$ref"
+channel: $chan
+error: "File not found"
+EOM
+    exit 1
+  fi
 fi
