@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/goval-community/goval-ident-schema/main/schema.jsonc",
+  "authors": ["LuisAFK"],
+  "description": "A Goval implementation, written in Bash.",
+  "license": "AGPL-3.0",
+  "repository": "https://github.com/lafkpages/bashval.git",
+  "server": "bashval"
+}
