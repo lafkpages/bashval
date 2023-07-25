@@ -14,7 +14,7 @@ state: Running
 EOM
 
 # Exec args
-readarray -t args < <(jq -Mc '.exec.args[]' <<<"$msg")
+readarray -t args < <(jq -Mrc '.exec.args[]' <<<"$msg")
 
 # Logs
 echo $'[EXEC]\t\tRunning command\t' "${args[0]}" 1>&2
