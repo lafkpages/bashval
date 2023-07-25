@@ -132,10 +132,12 @@ EOM
   # Goval ident protocol
   if [ "$path" = ".config/goval/info" ]; then
     path="src/utils/goval-ident.json"
-  fi
 
-  echo -n $'[GCSFILES]\tReading file\t\t' 1>&2
-  echo "$path" 1>&2
+    echo $'[GCSFILES]\tGoval Ident requested' 1>&2
+  else
+    echo -n $'[GCSFILES]\tReading file\t\t' 1>&2
+    echo "$path" 1>&2
+  fi
 
   # Read file
   file=$(base64 "$path" 2>/dev/null)
