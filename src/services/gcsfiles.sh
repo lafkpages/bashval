@@ -145,10 +145,6 @@ file {
   content: "$file"
 }
 EOM
-
-    # Logs
-    echo -n $'[GCSFILES]\tFile found\t\t' 1>&2
-    echo "$path" 1>&2
   else
     # File not found
     encode <<-EOM
